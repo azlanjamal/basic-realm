@@ -71,7 +71,35 @@ public class MainActivity extends AppCompatActivity {
 
     // Add Data to Realm in the Background Thread.
     public void addUserToRealm_ASynchronously(View view) {
+        final String id = UUID.randomUUID().toString();
+        final String name 				= etPersonName.getText().toString();
+        final int age 					= Integer.valueOf(etAge.getText().toString());
+        final String socialAccountName 	= etSocialAccountName.getText().toString();
+        final String status 				= etStatus.getText().toString();
 
+        realmAsyncTask = myRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                SocialAccount socialAccount = realm.createObject(SocialAccount.class);
+                socialAccount.setName(socialAccountName);
+                socialAccount.setStatus(status);
+
+                User user = realm.createObject(User.class, id);
+                user.setName(name);
+                user.setAge(age);
+                user.setSocialAccount(socialAccount);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Toast.makeText(MainActivity.this, "Added Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void displayAllUsers(View view) {
@@ -82,11 +110,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        if (realmAsyncTask != null && !realmAsyncTask.isCancelled()) {
+            realmAsyncTask.cancel();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        myRealm.close();
     }
 }
