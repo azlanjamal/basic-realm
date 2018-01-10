@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -104,6 +105,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void displayAllUsers(View view) {
 
+        RealmResults<User> userList = myRealm.where(User.class).findAll();
+
+        StringBuilder builder = new StringBuilder();
+
+        for (User user : userList) {
+            builder.append("ID: ").append(user.getId());
+            builder.append("\nName: ").append(user.getName());
+            builder.append(", Age: ").append(user.getAge());
+
+            SocialAccount socialAccount = user.getSocialAccount();
+            builder.append("\nS'Account: ").append(socialAccount.getName());
+            builder.append(", Status: ").append(socialAccount.getStatus()).append(" .\n\n");
+        }
     }
 
     @Override
