@@ -12,8 +12,10 @@ import com.azlanjamal.basicrealm.model.User;
 
 import java.util.UUID;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -105,6 +107,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sampleQueryExample(View view) {
+
+        /*RealmQuery<User> realmQuery = myRealm.where(User.class);
+        realmQuery.greaterThan("age", 15); // Condition 1
+        realmQuery.contains("name", "azlan", Case.INSENSITIVE); // Condition 2
+
+        RealmResults<User> userList = realmQuery.findAll();
+        displayQueriedUsers(userList);*/
+
+        // Alternative, use Fluid Interface
+        RealmResults<User> userList2 = myRealm.where(User.class)
+                .greaterThan("age", 15)
+                .contains("name", "azlan", Case.INSENSITIVE)
+                .findAll();
+        displayQueriedUsers(userList2);
 
     }
 
