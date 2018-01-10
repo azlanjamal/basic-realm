@@ -2,6 +2,7 @@ package com.azlanjamal.basicrealm;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             builder.append("\nS'Account: ").append(socialAccount.getName());
             builder.append(", Status: ").append(socialAccount.getStatus()).append(" .\n\n");
         }
+        Log.i(TAG + " List,", builder.toString());
     }
 
     @Override
