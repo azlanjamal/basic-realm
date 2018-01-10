@@ -104,10 +104,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void sampleQueryExample(View view) {
+
+    }
+
     public void displayAllUsers(View view) {
 
         RealmResults<User> userList = myRealm.where(User.class).findAll();
+        displayQueriedUsers(userList);
+    }
 
+    private void displayQueriedUsers(RealmResults<User> userList) {
         StringBuilder builder = new StringBuilder();
 
         for (User user : userList) {
